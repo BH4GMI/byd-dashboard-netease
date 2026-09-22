@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">网易云投屏</string>
+    <string name="app_list">应用列表</string>
+    <string name="app_list_close">收起列表</string>
+    <string name="back">关闭</string>
+    <string name="home">主页</string>
+    <string name="exit_control">退出管理</string>
+    <string name="tab_favorite">收藏</string>
+    <string name="tab_all">全部</string>
+    <string name="empty_favorite">还没有收藏\n在「全部」里点应用左边的 ☆ 即可收藏</string>
+    <string name="empty_all">正在读取应用清单…</string>
+    <string name="star_on">★</string>
+    <string name="star_off">☆</string>
+    <string name="status_waiting">正在定位仪表盘屏…</string>
+    <string name="status_ready">已投到仪表盘</string>
+    <string name="status_no_display">找不到仪表盘屏</string>
+    <string name="touchpad_hint">仪表盘触控区\n手指落点 1:1 注入</string>
+    <string name="preview_failed">预览失败：</string>
+    <string name="preview_desc">仪表盘画面预览</string>
+    <string name="preview_fallback">预览已降级为抓帧</string>
+    <string name="preview_fallback_no_surface">特权通道拒绝接收预览画面</string>
+    <string name="preview_fallback_priv_exited">特权进程已退出</string>
+    <string name="agent_offline">ADB 通道未连接</string>
+    <string name="agent_starting">正在建立 ADB 通道…</string>
+    <string name="launching">正在投屏：</string>
+    <string name="cast_ok">已投屏：</string>
+    <string name="cast_failed">投屏失败：</string>
+    <string name="cast_move_failed">应用已在别的屏上跑着，搬到仪表盘没生效，请先在最近任务里关掉它再试</string>
+    <string name="favorite_on">已收藏：</string>
+    <string name="favorite_off">已取消收藏：</string>
+    <string name="quick_prefix">一键</string>
+    <string name="quick_running">一键投屏：</string>
+    <string name="quick_done">已投屏并展开：</string>
+    <string name="quick_incomplete">未生效，应用没到仪表屏：</string>
+    <string name="auto_short">首开自动</string>
+    <string name="auto_on">首开自动已开启：</string>
+    <string name="auto_off">首开自动已关闭</string>
+    <string name="auto_need_account">无法识别当前登录账号，开关不可用</string>
+    <string name="auto_bind_failed">绑定失败：车机账号服务没有返回账号 ID</string>
+    <string name="auto_running">首开自动：正在执行 </string>
+    <string name="auto_failed">首开自动失败：</string>
+    <string name="auto_agent_offline">首开自动失败：ADB 通道未连接</string>
+</resources>

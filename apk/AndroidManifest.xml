@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.byd.dashcast.netease"
+    android:versionCode="113"
+    android:versionName="4.1-cast-reliable-netease">
+
+    <uses-sdk
+        android:minSdkVersion="26"
+        android:targetSdkVersion="32" />
+
+    <!-- 回环 TCP 也受 INTERNET 权限约束（paranoid networking），连 127.0.0.1:5555 必须声明。 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 开机后自己把 ADB 特权通道接上，让用户不必再插电脑。 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!--
+      包可见性声明。**没有它，应用列表里一半的条目显示的是包名而不是应用名。**
+
+      targetSdk 30+（这里是 32）在 Android 11+ 上默认做包可见性过滤：
+      PackageManager.getApplicationInfo() 对没被声明过、也没交互过的第三方包
+      直接抛 NameNotFoundException。InjectClient.labelOf() 拿不到 label 就退回包名 ——
+      而"哪些包可见"还是**动态**的：只有本进程启动过某个应用，它才会临时可见，
+      进程一重启这份授权就没了。表现就是"昨天还好好的，今天列表里全变包名了"。
+
+      <queries> 是官方为这件事准备的声明方式，不需要 QUERY_ALL_PACKAGES 那个受限权限。
+      我们要枚举并显示名称的是"有启动入口的应用"，所以按 MAIN/LAUNCHER 声明。
+    -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
+
+    <application
+        android:label="@string/app_name"
+        android:hardwareAccelerated="true"
+        android:theme="@style/CastTheme">
+
+        <activity
+            android:name=".CastActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|density"
+            android:theme="@style/CastTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+            ADB 授权引导。只会在尚未授权时真正显示；已授权时它会在几百毫秒内
+            直接转到 CastActivity，用户看不到这一页。
+        -->
+        <activity
+            android:name=".GuideActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@style/CastTheme" />
+
+        <receiver
+            android:name="com.byd.dashcast.netease.adb.BootReceiver"
+            android:exported="false"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <!-- BYD 车机用的是快速启动流程，两个都收。 -->
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

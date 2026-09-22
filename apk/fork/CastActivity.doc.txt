@@ -1,0 +1,31 @@
+/**
+ * 【网易云版分支 dashcast-netease】
+ *
+ * 与母工程（dashboard 工作区）的**唯一行为差异**：打开就投屏网易云并进歌词页，
+ * 不看开关、不看登录账号、不看是不是首启。
+ *
+ * 本文件由 dashboard 工作区的 scripts/sync_netease_fork.ps1 机械生成，**不要手改**。
+ * 脚本取母工程的 CastActivity.java 逐字复制（只改包名与跨进程常量前缀），再把
+ * 三段分支专有内容拼进来：
+ *   - 本段类注释（apk/fork/CastActivity.doc.txt）
+ *   - onCreate（apk/fork/CastActivity.onCreate.txt）
+ *   - keepWatchAfterTarget（apk/fork/CastActivity.overrides.txt，改为返回 false）
+ * 因此母工程的修复会自动流到本分支，不需要每次重新分析差异。
+ *
+ * 本分支永不建界面：onCreate 直接进"打开即投屏"分支。母工程那套管理界面
+ * （应用列表 / 镜像预览 / 触摸注入 / 一键按钮）的代码仍在文件里，但没有任何入口
+ * 调用它——保留它们正是为了让本文件能与母工程逐字对齐，差异越少跟进越省。
+ *
+ * 本分支实际执行的脚本（与母工程「一键」完全相同）：
+ *   投到仪表屏 display 2 → 轮询真实屏位等它稳定 → 抓帧判页、闭环补点进歌词页。
+ *   补点落点是实测数据，存 res/values/quick_taps.xml：网易云把播放页做成了应用
+ *   内部页面，既不开放深链也不响应语音广播。
+ *
+ * 特权进程（uid 2000）与母工程各自拉起各自的：本包得到
+ * com.byd.dashcast.netease-priv，Binder 描述符 / 广播 / extra 全部带 netease 前缀，
+ * 两个应用同时装着也互不串线。
+ *
+ * 已知限制：授权丢失时，母工程的 ensureAgent 会因 autoMode 为真而不弹引导页，
+ * 本分支继承同一行为（只留一条 toast）。需要手工授权时可显式打开引导页：
+ *   adb shell am start -n com.byd.dashcast.netease/.GuideActivity
+ */

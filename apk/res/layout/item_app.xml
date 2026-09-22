@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  应用清单的一行：左边星标（点它切换收藏），右边应用名（点名字投屏）。
+
+  星标是 TextView 而不是 Button/ImageButton：不需要额外 drawable，且
+  focusable="false" + clickable="true" 能让它自己吃掉点击、同时不妨碍
+  ListView 的 onItemClick 处理行的其余部分。
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="96px"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/rowStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="false"
+        android:paddingBottom="20px"
+        android:paddingLeft="28px"
+        android:paddingRight="20px"
+        android:paddingTop="20px"
+        android:textSize="26sp" />
+
+    <TextView
+        android:id="@+id/rowLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingBottom="20px"
+        android:paddingRight="28px"
+        android:paddingTop="20px"
+        android:textColor="#FFFFFFFF"
+        android:textSize="20sp" />
+</LinearLayout>

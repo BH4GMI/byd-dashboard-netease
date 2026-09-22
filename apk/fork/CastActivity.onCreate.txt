@@ -1,0 +1,15 @@
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        autoCast = new AutoCast(this);
+        // 本分支（网易云版）的启动策略就是"打开即投屏"：没有开关、不看登录账号、不看是不是首启。
+        // 每次打开都跑同一个脚本，跑完就退出，全程不建界面。
+        // 透明度由 manifest 的 CastTheme 提供——运行时 setTheme 改不动窗口背景，
+        // 实测那样主屏会黑屏约 2 秒。本分支不 setContentView，窗口整块透明。
+        autoMode = true;
+        super.onCreate(savedInstanceState);
+        prepareSession();
+        // shell 通道（ADB 长连接）是这条链路的命脉：它由本界面主动建立，
+        // 通道就绪后 onChannelReady 会在 autoMode 分支里直接接手跑脚本。
+        ensureAgent();
+        startAutoCast();
+    }

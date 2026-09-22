@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  界面主题。
+
+  为什么要在 manifest 里声明、而不是运行时 setTheme()：
+  「窗口是否半透明」和「窗口背景」在窗口创建时就按 manifest 主题定死了，
+  onCreate 里的 setTheme() 改不动它们。实测：首开自动分支里调
+  setTheme(Theme_Translucent_NoTitleBar)，主屏仍然黑屏约 2 秒（逐帧采样平均亮度 1.1）。
+
+  这里保留 DeviceDefault 的控件外观（只加半透明 + 透明背景），所以界面按钮的样式不变；
+  界面自己的根布局本来就是不透明黑底，正常界面看起来与之前一致。
+  首开自动那条路径不 setContentView，于是整块窗口全透明，用户看不见。
+-->
+<resources>
+    <style name="CastTheme" parent="@android:style/Theme.DeviceDefault.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:backgroundDimAmount">0.0</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+</resources>

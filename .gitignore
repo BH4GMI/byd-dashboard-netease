@@ -1,0 +1,9 @@
+# build outputs
+apk/out/
+*.apk
+*.idsig
+
+# local signing fallback and bundled identities never ship
+apk/debug.keystore
+apk/assets/adb_identity.pk8
+apk/assets/dashcast-agent.jar

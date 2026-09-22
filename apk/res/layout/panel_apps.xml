@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  应用选择面板。默认隐藏，由底部「应用列表」按钮切换。
+
+  版式与触控无关，但**必须保持 activity_cast.xml 里的子视图顺序**
+  （预览 → 触控板 → 本面板 → 操作条），否则触控派发会被打断——这条已经实测过。
+
+  没有搜索框：这是车机，输入法是否弹出不可靠，而且 74 个应用的列表用「收藏 + 快速滚动」
+  更符合驾驶场景。ListView 开了 fastScrollEnabled，纯触摸即可拖动定位。
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/appPanel"
+    android:layout_width="1520px"
+    android:layout_height="660px"
+    android:layout_gravity="center"
+    android:background="#FF101418"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="24px"
+        android:paddingRight="24px"
+        android:paddingTop="16px"
+        android:paddingBottom="12px">
+
+        <Button
+            android:id="@+id/tabFavorite"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/tab_favorite" />
+
+        <Button
+            android:id="@+id/tabAll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16px"
+            android:layout_weight="1"
+            android:text="@string/tab_all" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ListView
+            android:id="@+id/appList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#33FFFFFF"
+            android:dividerHeight="1px"
+            android:fastScrollEnabled="true"
+            android:scrollbars="vertical" />
+
+        <TextView
+            android:id="@+id/emptyHint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="32px"
+            android:text="@string/empty_favorite"
+            android:textColor="#80FFFFFF"
+            android:textSize="20sp"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>
