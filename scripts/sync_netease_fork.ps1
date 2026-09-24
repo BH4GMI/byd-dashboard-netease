@@ -18,16 +18,22 @@
 # never talk to each other's privileged process.
 #
 # ASCII only: Windows PowerShell 5.1 reads .ps1 as ANSI unless it has a BOM.
+#
+# Defaults are RELATIVE here (unlike the development copy, which points at the author's
+# absolute paths): this repository is meant to be checked out next to byd-dashboard and
+# regenerated from it, so `-Main` is the sibling published repo and `-Fork` is this repo's
+# own apk tree. Override either explicitly if your layout differs.
 param(
-    # Default layout: this repo and a clone of byd-dashboard sit side by side.
-    #   <anywhere>\byd-dashboard\apk        <- Main   (the public main project)
-    #   <anywhere>\byd-dashboard-netease\   <- this repo; the fork is generated into apk\
     [string]$Main = '',
     [string]$Fork = ''
 )
-$repoRoot = Split-Path -Parent $PSScriptRoot
+
+$repoRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 if (-not $Main) { $Main = Join-Path (Split-Path -Parent $repoRoot) 'byd-dashboard\apk' }
 if (-not $Fork) { $Fork = Join-Path $repoRoot 'apk' }
+if (-not (Test-Path (Join-Path $Main 'AndroidManifest.xml'))) {
+    throw "main apk tree not found at $Main (pass -Main <path-to-byd-dashboard/apk>)"
+}
 
 $ErrorActionPreference = 'Stop'
 $utf8 = New-Object System.Text.UTF8Encoding $false
@@ -100,9 +106,9 @@ foreach ($stale in @(
 
 Write-Output '--- java: verbatim copy + package prefix ---'
 $plain = @(
-    'AppRepo.java', 'AutoCast.java', 'CarAccount.java', 'CastActivity.java' , 'DashboardEye.java',
-    'DashboardSession.java', 'Favorites.java', 'GuideActivity.java', 'InjectClient.java',
-    'PrivilegedClient.java', 'ShellChannel.java'
+    'AppLog.java', 'AppRepo.java', 'AutoCast.java', 'CarAccount.java', 'CastActivity.java' ,
+    'CastGuardService.java', 'DashboardEye.java', 'DashboardSession.java', 'Favorites.java',
+    'GuideActivity.java', 'InjectClient.java', 'PrivilegedClient.java', 'ShellChannel.java'
 )
 # CastActivity.java is listed only so a missing file fails loudly here; it is overwritten
 # by the splice step below.
@@ -201,11 +207,10 @@ $mainVn = [regex]::Match($mf, 'android:versionName="([^"]*)"').Groups[1].Value
 if ($mainVn.Length -eq 0) { throw 'anchor not found: main versionName' }
 # versionCode intentionally stays identical to the main project: the two apps are different
 # packages, and versionName is the single source of truth for "which line is this".
-$mf = $mf -replace 'package="com\.byd\.dashcast"', 'package="com.byd.dashcast.netease"'
-$mf = $mf -replace 'com\.byd\.dashcast\.adb\.BootReceiver', 'com.byd.dashcast.netease.adb.BootReceiver'
+$mf = Convert-Package $mf
 $mf = $mf -replace 'android:versionName="[^"]*"', ('android:versionName="' + $mainVn + '-netease"')
 Write-Text (Join-Path $Fork 'AndroidManifest.xml') $mf
-Write-Output "  AndroidManifest.xml (versionName $mainVn-netease)"
+Write-Output "  AndroidManifest.xml (package + every component by the single rule; versionName $mainVn-netease)"
 
 $bp = Read-Text (Join-Path $Main 'build.ps1')
 $bp = $bp -replace "'dashcast\.apk'", "'dashcast-netease.apk'"
@@ -250,6 +255,19 @@ if ($leak) {
     Write-Output 'FAILED: unrenamed com.byd.dashcast token(s) in the fork'; exit 1
 }
 Write-Output '  OK   every com.byd.dashcast token carries the .netease prefix'
+
+# The manifest carries the same token in component class names (activity/receiver/service),
+# the package attribute and intents. It used to be patched by two hardcoded replacements,
+# which silently missed every component added later -- observed 2026-09-24: the new guard
+# service kept com.byd.dashcast.CastGuardService in the fork and could not be started
+# (the class does not exist in that APK). Now it goes through the same single rule, and the
+# same assertion guards it.
+$mfFork = Read-Text (Join-Path $Fork 'AndroidManifest.xml')
+if ($mfFork -match 'com\.byd\.dashcast(?!\.netease)') {
+    Write-Output '  LEAK AndroidManifest.xml still carries an unrenamed com.byd.dashcast token'
+    Write-Output 'FAILED: unrenamed com.byd.dashcast token(s) in the fork manifest'; exit 1
+}
+Write-Output '  OK   manifest: every component/package token carries the .netease prefix'
 
 # And the renamed tokens the privileged channel actually speaks must all be present.
 $need = @(
