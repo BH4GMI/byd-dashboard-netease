@@ -2,11 +2,10 @@
 
 BYD DiLink 5 仪表盘投屏 · **网易云音乐一键版**（`com.byd.dashcast.netease`）
 
-> ⚠️ **本分支 `beta/5.0` 是预发布（pre-release）。**
-> 下面这段实车结论属于 `4.3-user-intent-netease`，**不适用于本分支的 5.0 改动**：
-> 5.0 的认屏判据化、owner 归属校验、DiLink 3/4 直投通路、失败时诊断与一键导出
-> **都还没有装车验证**。
-> 稳定版请取 `main` 分支的 `v4.3-user-intent-netease`。
+> ⚠️ **5.0-netease 已作为正式 release 发布，但尚未实机验证。**
+> 下面这段实车结论属于 `4.3-user-intent-netease`，**不适用于 5.0 的改动**：
+> 认屏判据化、owner 归属校验、DiLink 3/4 直投通路、失败时诊断与一键导出**都还没有装车验证**。
+> 只想要经实车验证的版本，请取 `4.3-user-intent-netease` 的 release（仍然可下载）。
 >
 > ✅ **已在实车验证（2026-09-24）**
 > 与本版同源的链路已在 DiLink 5.0 车机上安装并实跑：冷启动链路约 11 秒到达歌词播放页，

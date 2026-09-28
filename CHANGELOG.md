@@ -5,7 +5,7 @@ git tag = `v` + versionName。本分支版本跟母工程
 [byd-dashboard](https://github.com/BH4GMI/byd-dashboard) 走：
 `<母工程 versionName>-netease`，versionCode 相同。
 
-## 5.0-netease (versionCode 118) — ⚠️ 预发布 / pre-release，未实机验证
+## 5.0-netease (versionCode 118) — ⚠️ 正式 release，仍未实机验证
 
 与母工程 [`5.0`](https://github.com/BH4GMI/byd-dashboard/releases/tag/v5.0) 同源，
 由 `scripts/sync_netease_fork.ps1` 机械生成。含 `4.4-display-detect-netease` 与
