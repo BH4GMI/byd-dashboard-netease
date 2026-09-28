@@ -5,6 +5,23 @@ git tag = `v` + versionName。本分支版本跟母工程
 [byd-dashboard](https://github.com/BH4GMI/byd-dashboard) 走：
 `<母工程 versionName>-netease`，versionCode 相同。
 
+## 4.4-display-detect-netease (versionCode 116) — ⚠️ 预发布 / pre-release，未实机验证
+
+与母工程 [`4.4-display-detect`](https://github.com/BH4GMI/byd-dashboard/releases/tag/v4.4-display-detect) 同源，
+由 `scripts/sync_netease_fork.ps1` 机械生成（改名与编码断言随生成流程执行）。
+
+**本版没有装车验证过。** 稳定版仍是 `4.3-user-intent-netease`（`versionCode 115`，`main` 分支）。
+母工程 4.4 的完整变更说明与验证状态表见[母工程 CHANGELOG](https://github.com/BH4GMI/byd-dashboard/blob/main/CHANGELOG.md)，
+此处不复制，避免两边漂移。
+
+- **认屏判据化，新增 `DisplayTable`**（纯 Java、零 Android 依赖，因而可离线验证）；
+  本分支的 `DashboardSession` / `CastActivity` / `ShellChannel` 同步跟进。
+- **删除投屏槽位兜底常量 3**：认不出来一律判「本机未适配」，不再猜 id。
+- **新增 DiLink 3/4 直投通路 `DIRECT` 与 owner 归属校验**；识别升级为应用侧枚举 + daemon 精化两趟。
+
+**安装提示**：`versionCode 116 > 115`，可覆盖安装；但装了 116 之后**不能**覆盖回 115
+（`INSTALL_FAILED_VERSION_DOWNGRADE`），退回旧版必须卸载重装，那会一并清掉已保存的 ADB 授权身份。
+
 ## 4.3-user-intent-netease (versionCode 115)
 
 与母工程 `4.3-user-intent` 同源，由 `scripts/sync_netease_fork.ps1` 机械生成。
