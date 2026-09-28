@@ -5,6 +5,20 @@ git tag = `v` + versionName。本分支版本跟母工程
 [byd-dashboard](https://github.com/BH4GMI/byd-dashboard) 走：
 `<母工程 versionName>-netease`，versionCode 相同。
 
+## 4.4-diagnostics-netease (versionCode 117) — ⚠️ 预发布 / pre-release，未实机验证
+
+与母工程 [`4.4-diagnostics`](https://github.com/BH4GMI/byd-dashboard/releases/tag/v4.4-diagnostics) 同源。
+与 116 属同一条加固线，只是补上诊断信息；**同样没有装车验证过**。116 的改动见下一节。
+
+- **未适配时补出平台事实**（`product=` / `sdk=` / `single_os=`），原因串不再只有一句"没命中任何屏族"。
+  `single_os` 经 shell 通道（uid 2000）读取 —— `android.os.SystemProperties` 是 @hide，
+  反射在 targetSdk 32 下会被隐藏 API 限制挡住。
+- **单 OS 机型额外说明一句**「仪表由车机原生渲染，这类机型不适用第三方投屏」。
+  **该说明只影响文案、不参与判定**：通路仍然只看显示拓扑，不按版本号决策。
+- 母工程完整的落盘形态示例与验证状态表见母工程 CHANGELOG，此处不复制。
+
+**安装提示**：`versionCode 117 > 115`，可覆盖安装；装了 117 后**不能**覆盖回 115，退回需卸载重装。
+
 ## 4.4-display-detect-netease (versionCode 116) — ⚠️ 预发布 / pre-release，未实机验证
 
 与母工程 [`4.4-display-detect`](https://github.com/BH4GMI/byd-dashboard/releases/tag/v4.4-display-detect) 同源，
