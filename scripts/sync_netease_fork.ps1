@@ -18,22 +18,10 @@
 # never talk to each other's privileged process.
 #
 # ASCII only: Windows PowerShell 5.1 reads .ps1 as ANSI unless it has a BOM.
-#
-# Defaults are RELATIVE here (unlike the development copy, which points at the author's
-# absolute paths): this repository is meant to be checked out next to byd-dashboard and
-# regenerated from it, so `-Main` is the sibling published repo and `-Fork` is this repo's
-# own apk tree. Override either explicitly if your layout differs.
 param(
-    [string]$Main = '',
-    [string]$Fork = ''
+    [string]$Main = 'C:\Users\REDMI\Desktop\Workspace\Android\dashboard\apk',
+    [string]$Fork = 'C:\Users\REDMI\Desktop\Workspace\Android\dashcast-netease\apk'
 )
-
-$repoRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
-if (-not $Main) { $Main = Join-Path (Split-Path -Parent $repoRoot) 'byd-dashboard\apk' }
-if (-not $Fork) { $Fork = Join-Path $repoRoot 'apk' }
-if (-not (Test-Path (Join-Path $Main 'AndroidManifest.xml'))) {
-    throw "main apk tree not found at $Main (pass -Main <path-to-byd-dashboard/apk>)"
-}
 
 $ErrorActionPreference = 'Stop'
 $utf8 = New-Object System.Text.UTF8Encoding $false
@@ -106,9 +94,10 @@ foreach ($stale in @(
 
 Write-Output '--- java: verbatim copy + package prefix ---'
 $plain = @(
-    'AppLog.java', 'AppRepo.java', 'AutoCast.java', 'CarAccount.java', 'CastActivity.java' ,
-    'CastGuardService.java', 'DashboardEye.java', 'DashboardSession.java', 'Favorites.java',
-    'GuideActivity.java', 'InjectClient.java', 'PrivilegedClient.java', 'ShellChannel.java'
+    'ActivityStartLog.java', 'AppLog.java', 'AppRepo.java', 'AutoCast.java', 'CarAccount.java',
+    'CastActivity.java', 'CastGuardService.java', 'DashboardEye.java', 'DashboardSession.java',
+    'Favorites.java', 'GuideActivity.java', 'InjectClient.java', 'PrivilegedClient.java',
+    'ShellChannel.java'
 )
 # CastActivity.java is listed only so a missing file fails loudly here; it is overwritten
 # by the splice step below.

@@ -5,6 +5,24 @@ git tag = `v` + versionName。本分支版本跟母工程
 [byd-dashboard](https://github.com/BH4GMI/byd-dashboard) 走：
 `<母工程 versionName>-netease`，versionCode 相同。
 
+## 4.3-user-intent-netease (versionCode 115)
+
+与母工程 `4.3-user-intent` 同源，由 `scripts/sync_netease_fork.ps1` 机械生成。
+
+- **归位不再对着空壳任务空转**（母工程 CHANGELOG 4.3 详述）。本分支实测的失败现场正是这一条：
+  网易云被系统回收后 task 残留成 `sz=0` 的空壳，而 `taskDisplay()` 只认"Task 行存在"，
+  于是把"必须启动应用"误判成"只需搬移"，`am display move-stack` 对空壳无效，屏位回查永远不变，
+  8 秒内重试 22 次后如实报"搬到仪表盘没生效"，仪表屏全程空白。
+  判据层新增 `isLiveTask()`：只认 `sz>0` 的任务；解析不到 `sz` 时保守按"有内容"处理。
+- **用户可以点桌面图标把投屏收回去**（母工程 CHANGELOG 4.3 详述）。守位新增按 AMS 的
+  activity 启动记录区分"应用自己跳回主屏"与"用户点桌面图标叫回来"，后者按用户意图结束投屏，
+  而不是搬回。判据排在归位之前。
+- 实测（2026-09-28，同一台车）：修复前 `当前屏位=0` → 8 秒内 22 次归位失败 → 投屏失败；
+  修复后 `当前屏位=-1` → 走启动分支 → `投屏完成`（display 3），`screencap -d 2` 得到 256 KB
+  的正常画面（修复前该屏全程空白）。
+- 分支差异仍是 `apk/fork/` 三个片段；`keepWatchAfterTarget()` 仍返回 `false`，
+  投屏驻留统一由守位服务负责。
+
 ## 4.2-cast-hold-netease (versionCode 114)
 
 与母工程 `4.2-cast-hold` 同源，由 `scripts/sync_netease_fork.ps1` 机械生成。本版改动最大的地方，
