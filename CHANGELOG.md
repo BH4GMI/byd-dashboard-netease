@@ -5,6 +5,26 @@ git tag = `v` + versionName。本分支版本跟母工程
 [byd-dashboard](https://github.com/BH4GMI/byd-dashboard) 走：
 `<母工程 versionName>-netease`，versionCode 相同。
 
+## 5.0-netease (versionCode 118) — ⚠️ 预发布 / pre-release，未实机验证
+
+与母工程 [`5.0`](https://github.com/BH4GMI/byd-dashboard/releases/tag/v5.0) 同源，
+由 `scripts/sync_netease_fork.ps1` 机械生成。含 `4.4-display-detect-netease` 与
+`4.4-diagnostics-netease` 的全部改动。
+
+**本版没有装车验证过。** 稳定版仍是 `4.3-user-intent-netease`（`versionCode 115`，`main` 分支）。
+
+**为什么从 4.4 跳到 5.0**：4.4 做的是"认得出哪块屏"，5.0 在其上加了跨代次可用性与
+用户可自助排障，属能力跃迁而非修订。
+
+- **诊断只在判定失败时出**：平台事实不再混进每一条判定日志；代价是成功路径失去跨代证据，
+  由一键导出补上。
+- **一键导出诊断报告**：操作条新增「诊断」按钮，报告含身份/设备/平台事实/通路判定/
+  原始屏表/日志尾部 6000 字符。先交系统分享，同时写 `getExternalFilesDir` 下的 txt
+  —— 车机多半没有能接收 `ACTION_SEND` 的应用，文件与路径是兜底。
+- 母工程完整的变更说明与验证状态表见母工程 CHANGELOG，此处不复制以免漂移。
+
+**安装提示**：`versionCode 118 > 115`，可覆盖安装；装了 118 后**不能**覆盖回 115，退回需卸载重装。
+
 ## 4.4-diagnostics-netease (versionCode 117) — ⚠️ 预发布 / pre-release，未实机验证
 
 与母工程 [`4.4-diagnostics`](https://github.com/BH4GMI/byd-dashboard/releases/tag/v4.4-diagnostics) 同源。

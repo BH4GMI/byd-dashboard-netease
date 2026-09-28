@@ -2,9 +2,10 @@
 
 BYD DiLink 5 仪表盘投屏 · **网易云音乐一键版**（`com.byd.dashcast.netease`）
 
-> ⚠️ **本分支 `beta/4.4-display-detect` 是预发布（pre-release）。**
-> 下面这段实车结论属于 `4.3-user-intent-netease`，**不适用于本分支的 4.4 改动**：
-> 4.4 的认屏判据化、owner 归属校验与 DiLink 3/4 直投通路**都还没有装车验证**。
+> ⚠️ **本分支 `beta/5.0` 是预发布（pre-release）。**
+> 下面这段实车结论属于 `4.3-user-intent-netease`，**不适用于本分支的 5.0 改动**：
+> 5.0 的认屏判据化、owner 归属校验、DiLink 3/4 直投通路、失败时诊断与一键导出
+> **都还没有装车验证**。
 > 稳定版请取 `main` 分支的 `v4.3-user-intent-netease`。
 >
 > ✅ **已在实车验证（2026-09-24）**
